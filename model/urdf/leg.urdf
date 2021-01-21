@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+
+<robot name="robot_demo">
+  
+   <material name="gray">
+      <color rgba="0.4078 0.4078 0.4078 1"/>
+   </material>  
+ 
+   <link name="Hip">
+      <inertial>
+         <origin rpy="0 0 0" xyz="-0.1208 0.0491 0" />
+         <mass value="4.15096500661102"/>
+         <inertia ixx="0.0111018856" ixy="-0.0021856788" ixz="0" iyy="0.050897466" iyz="0" izz="0.0578371271" />
+      </inertial>
+ 
+      <visual>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/Hip.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+         <material name="gray"/>
+      </visual>
+ 
+      <collision>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/Hip.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+      </collision>
+   </link>
+
+   <link name="U_Joint">
+      <inertial>
+         <origin rpy="0 0 0" xyz="0 0 0" />
+         <mass value="0.0760766233244915"/>
+         <inertia ixx="3.83748E-05" ixy="0" ixz="0" iyy="9.53528E-05" iyz="0" izz="6.14204E-05" />
+      </inertial>
+ 
+      <visual>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/U_Joint.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+         <material name="gray"/>
+      </visual>
+ 
+      <collision>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/U_Joint.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+      </collision>
+   </link>
+ 
+   <link name="Thigh">
+      <inertial>
+         <origin rpy="0 0 0" xyz="0 -0.3081 -0.0111" />
+         <mass value="40.329327914939"/>
+         <inertia ixx="1.5722465158" ixy="1.90063E-05" ixz="-1.7466E-06" iyy="0.4651119469" iyz="-0.087336973" izz="1.5246716464" />
+      </inertial>
+ 
+      <visual>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/Thigh.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+         <material name="gray"/>
+      </visual>
+ 
+      <collision>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/Thigh.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+      </collision>
+   </link>
+
+   <link name="Calf">
+      <inertial>
+         <origin rpy="0 0 0" xyz="0 -0.8698 -0.0443" />
+         <mass value="8.3979540642055"/>
+         <inertia ixx="0.1337069522" ixy="-1.612E-07" ixz="4.57E-08" iyy="0.0282575571" iyz="-0.0024330515" izz="0.1300659128" />
+      </inertial>
+ 
+      <visual>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/Calf.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+         <material name="gray"/>
+      </visual>
+ 
+      <collision>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/Calf.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+      </collision>
+   </link>
+
+
+   <link name="Foot">
+      <inertial>
+         <origin rpy="0 0 0" xyz="0.0007 -1.1795 0.0232" />
+         <mass value="2.01486583605614"/>
+         <inertia ixx="0.0138306586" ixy="8.5771E-06" ixz="-0.0001164009" iyy="0.0150062989" iyz="0.0005280028" izz="0.0032579822" />
+      </inertial>
+ 
+      <visual>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/Foot.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+         <material name="gray"/>
+      </visual>
+ 
+      <collision>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/Foot.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+      </collision>
+   </link>
+
+   <link name="MiniU_Joint">
+      <inertial>
+         <origin rpy="0 0 0" xyz="0 -1.1342 -0.0434" />
+         <mass value="0.0468267748967935"/>
+         <inertia ixx="1.03093E-05" ixy="0" ixz="0" iyy="2.75358E-05" iyz="0" izz="2.02253E-05" />
+      </inertial>
+ 
+      <visual>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/MiniU_Joint.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+         <material name="gray"/>
+      </visual>
+ 
+      <collision>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/MiniU_Joint.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+      </collision>
+   </link>
+ 
+   <link name="Toes">
+      <inertial>
+         <origin rpy="0 0 0" xyz="0.0025 -1.1944 0.1876" />
+         <mass value="0.303089559377311"/>
+         <inertia ixx="0.000156995" ixy="0" ixz="0" iyy="0.0004208978" iyz="-2.8E-09" izz="0.0003507818" />
+      </inertial>
+ 
+      <visual>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/Toes.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+         <material name="gray"/>
+      </visual>
+ 
+      <collision>
+         <geometry>
+            <mesh filename="package://prosthesis/model/meshes/Toes.stl" scale="0.01 0.01 0.01"/>
+         </geometry>
+      </collision>
+   </link>
+
+ 
+   <joint name="Rotational_1" type="revolute">
+      <parent link="Hip"/>
+      <child link="U_Joint"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="300" velocity="0.1" lower="-0.70" upper="0.70"/>
+   </joint>
+ 
+ 
+   <joint name="Rotational_2" type="revolute">
+      <parent link="U_Joint"/>
+      <child link="Thigh"/>
+      <origin xyz="0 0 0" rpy="0 1.57 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="300" velocity="0.1" lower="-1.57" upper="0"/>
+   </joint>
+
+   <joint name="Rotational_3" type="revolute">
+      <parent link="Thigh"/>
+      <child link="Calf"/>
+      <origin xyz="0 -0.6842 -0.04338" rpy="1.5708 -1.5708 -1.5708"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="300" velocity="0.1" lower="-1.57" upper="0"/>
+   </joint>
+ 
+ 
+   <joint name="Rotational_4" type="revolute">
+      <parent link="Calf"/>
+      <child link="MiniU_Joint"/>
+      <origin xyz="0 -0.45 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="300" velocity="0.1" lower="-0.80" upper="0.35"/>
+   </joint>
+ 
+ 
+   <joint name="Rotational_5" type="revolute">
+      <parent link="MiniU_Joint"/>
+      <child link="Foot"/>
+      <origin xyz="0 0 0" rpy="0 1.57 0"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="300" velocity="0.1" lower="-0.20" upper="0.20"/>
+   </joint>
+
+   <joint name="Rotational_6" type="revolute">
+      <parent link="Foot"/>
+      <child link="Toes"/>
+      <origin xyz="0.0025 -0.0601 0.1945" rpy="0 1.57 3.1416"/>
+      <axis xyz="0 0 1"/>
+      <limit effort="300" velocity="0.1" lower="-0.35" upper="0.30"/> 
+   </joint>
+</robot>
