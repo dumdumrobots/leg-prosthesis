@@ -89,7 +89,7 @@ def jacobian_pose(q, delta=0.0001):
     quat = rot2quat(T)
 
     for i in xrange(6):
-         dq = copy.copy(q)
+         dq = copy(q)
 
          dq[i]= dq[i] + delta
 
@@ -147,3 +147,23 @@ def skew(w):
     R[1,0] = w[2];  R[1,2] = -w[0]
     R[2,0] = -w[1]; R[2,1] = w[0]
     return R
+
+def ikine(xdes, q0):
+
+    epsilon  = 0.001
+    max_iter = 1000
+    delta    = 0.00001
+ 
+    q  = copy(q0)
+    J=jacobian_position(q,0.0001)
+    
+    for i in range(max_iter):
+
+        f=fkine(q)
+        e=xdes-f[0:3,3]  
+        q=q+np.dot(np.linalg.pinv(J),e) 
+
+        if(np.linalg.norm(e)<epsilon):
+            break
+
+    return q

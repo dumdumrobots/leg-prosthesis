@@ -12,7 +12,7 @@ import rbdl
 bmarker_actual  = BallMarker(color['RED'])
 bmarker_deseado = BallMarker(color['GREEN'])
 
-rospy.init_node("control_pdg")
+rospy.init_node("Inverse_Kinematic_Control")
 print('\nDynamic Position Control v1.0 initiating ...\n')
 
 fxcurrent = open("/tmp/xcurrent.txt", "w")              
@@ -31,25 +31,25 @@ jstate = JointState()
 jstate.header.stamp = rospy.Time.now()
 jstate.name = jnames
  
-# =============================================================
+# ____________________________________________________________
 # Configuracion articular inicial (en radianes)
 q = np.array([-0.7, -0.79, -1.57, -0.8, 0.0, 0.0])
 
-# Velocidad inicial
+# Velocidad articular inicial (en radianes/s)
 dq = np.array([0., 0., 0., 0., 0., 0.])
 
-# Aceleracion inicial
+# Aceleracion articular inicial (en radianes/s^2)
 ddq = np.array([0., 0., 0., 0., 0., 0.])
 
-# Configuracion articular deseada
+# Configuracion articular deseada (en radianes)
 qdes = np.array([0.11, 0, 0, -0.8, 0.1, -0.15])
 
-# Velocidad articular deseada
+# Velocidad articular deseada (en radianes/s)
 dqdes = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
-# Aceleracion articular deseada
+# Aceleracion articular deseada (en radianes/s^2)
 ddqdes = np.array([0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
-# =============================================================
+# ____________________________________________________________
  
 # Posicion resultante de la configuracion articular deseada
 xdes = fkine(qdes)[0:3,3]
@@ -64,8 +64,8 @@ jstate.position = q
 pub.publish(jstate)
  
 # Modelo RBDL
-modelo = rbdl.loadModel('/home/stingray/project_ws/src/prosthesis/model/urdf/leg.urdf')
-ndof   = modelo.q_size     # Grados de libertad
+leg_model = rbdl.loadModel('/home/stingray/project_ws/src/prosthesis/model/urdf/leg.urdf')
+ndof   = leg_model.q_size     # Grados de libertad
 zeros = np.zeros(ndof)     # Vector de ceros
  
 # Frecuencia del envio (en Hz)
@@ -74,16 +74,16 @@ dt = 1.0/freq
 rate = rospy.Rate(freq)
  
 # Simulador dinamico del robot
-robot = Robot(q, dq, ndof, dt)
+legRobot = Robot(q, dq, ndof, dt)
  
 # Bucle de ejecucion continua
 t = 0.0
  
 # Se definen las ganancias del controlador
-valores = 1*np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
-Kp = np.diag(valores)
+ganancias = 1*np.array([1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+Kp = np.diag(ganancias)
 Kd = 2*np.sqrt(Kp)
- 
+
 # Arrays numpy
 zeros = np.zeros(ndof)          # Vector de ceros
 tau   = np.zeros(ndof)          # Para torque
@@ -93,28 +93,28 @@ M     = np.zeros([ndof, ndof])  # Para la matriz de inercia
 e     = np.eye(6)               # Vector identidad
  
 while not rospy.is_shutdown():
- 
+
    # Leer valores del simulador
-   q  = robot.read_joint_positions()
-   dq = robot.read_joint_velocities()
+   q  = legRobot.read_joint_positions()
+   dq = legRobot.read_joint_velocities()
    # Posicion actual del efector final
    x = fkine(q)[0:3,3]
-   # Tiempo actual (necesario como indicador para ROS)
+   # Tiempo actual
    jstate.header.stamp = rospy.Time.now()
    
-   # ----------------------------
+   # ____________________________________________________________
    # Control dinamico
-   # ----------------------------
-   rbdl.InverseDynamics(modelo, q, zeros, zeros, g)
-   rbdl.CompositeRigidBodyAlgorithm(modelo,q,M)
-   rbdl.NonlinearEffects(modelo,q,dq,c)
+   # ____________________________________________________________
+   rbdl.InverseDynamics(leg_model, q, zeros, zeros, g)
+   rbdl.CompositeRigidBodyAlgorithm(leg_model,q,M)
+   rbdl.NonlinearEffects(leg_model,q,dq,c)
 
    u = M.dot( ddqdes + Kd.dot(dqdes - dq) + Kp.dot(qdes-q) ) + c
  
    if np.linalg.norm(qdes-q)< 0.01:
        break
    # Simulacion del robot
-   robot.send_command(u)
+   legRobot.send_command(u)
 
    # Log values                                                    
    fxcurrent.write(str(x[0])+' '+str(x[1]) +' '+str(x[2])+'\n')
@@ -127,7 +127,6 @@ while not rospy.is_shutdown():
    bmarker_deseado.xyz(xdes)
    bmarker_actual.xyz(x)
    t = t+dt
-   # Esperar hasta la siguiente  iteracion
    rate.sleep()
 
 print("\nFinal Error: \n")
